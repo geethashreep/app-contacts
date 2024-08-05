@@ -1,25 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import Card from './Card';
+import './Card.css';
+import { Contacts } from './Contacts';
 
-function App() {
+const App = () => {
+  const [contacts, setContacts] = useState(Contacts);
+
+  const deleteContact = (id) => {
+    setContacts(contacts.filter(contact => contact.id !== id));
+  };
+
+  const deleteAllContacts = () => {
+    setContacts([]);
+
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='app-container'>
+      <h1 className="heading">{contacts.length>0?"USER LIST":"NO MORE USERS TO DELETE"}</h1>
+      <div className='cards-container'>
+        {contacts.map(contact => (
+          <Card
+            id={contact.id}
+            firstName={contact.firstName}
+            lastName={contact.lastName}
+            phone={contact.phone}
+            address={contact.address}
+            onDelete={deleteContact}
+          />
+        ))}
+      </div>
+      <div className="deleteall">
+      {contacts.length>0&&(
+      <button className="delbuttonall" onClick={deleteAllContacts}>Delete All</button>)}
+      </div>
     </div>
   );
-}
+};
 
 export default App;
+
